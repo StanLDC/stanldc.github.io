@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDC Search</title>
+    <!-- Import Play font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="searchstyles.css">
+</head>
+<body>
+    <!-- About Link -->
+    <a href="searchabout.html" class="about-link">About</a>
+
+    <!-- Search Container -->
+    <div class="search-container">
+        <!-- LDC Search Heading -->
+        <h1>LDC Search</h1>
+
+        <!-- Search Box -->
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search Google..." />
+            <button onclick="searchGoogle()">🔍</button>
+        </div>
+    </div>
+
+    <!-- Change Background Text -->
+    <div class="change-background" id="change-background">Themes</div>
+
+    <!-- Popup Menu -->
+    <div class="popup-menu" id="popup-menu">
+        <!-- Main Options -->
+        <button id="colour-button">Colour</button>
+        <button id="image-button">Image</button>
+
+        <!-- Colour Options Submenu -->
+        <div class="colour-options" id="colour-options">
+            <button data-color="#b54848">Red</button>
+            <button data-color="#b57548">Orange</button>
+            <button data-color="#b5b148">Yellow</button>
+            <button data-color="#6eb548">Green</button>
+            <button data-color="#485eb5">Blue</button>
+            <button data-color="#ff00ff">Pink</button>
+            <button data-color="#45326e">Purple</button>
+            <button id="rainbow-button">Rainbow</button>
+            <button data-color="#FFFFFF" data-light-mode="true">White</button>
+        </div>
+    </div>
+
+    <!-- Image URL Popup -->
+    <div class="image-url-popup" id="image-url-popup">
+        <div class="popup-content">
+            <h2>Set Background Image</h2>
+            <input type="text" id="image-url-input" placeholder="Enter image URL..." />
+            <button id="set-image-button">Set Image</button>
+            <button id="close-image-popup">Close</button>
+        </div>
+    </div>
+
+    <!-- First-Time Popup -->
+    <div class="first-time-popup" id="first-time-popup">
+        <div class="popup-content">
+            <h2>Welcome to LDC Search! Please choose your background colour or wallpaper!</h2>
+            <div class="color-options">
+                <div class="color-option" data-color="#b54848" style="background-color: #b54848;">Red</div>
+                <div class="color-option" data-color="#b57548" style="background-color: #b57548;">Orange</div>
+                <div class="color-option" data-color="#b5b148" style="background-color: #b5b148;">Yellow</div>
+                <div class="color-option" data-color="#6eb548" style="background-color: #6eb548;">Green</div>
+                <div class="color-option" data-color="#485eb5" style="background-color: #485eb5;">Blue</div>
+                <div class="color-option" data-color="#ff00ff" style="background-color: #ff00ff;">Pink</div>
+                <div class="color-option" data-color="#45326e" style="background-color: #45326e;">Purple</div>
+                <div class="color-option" data-color="#FFFFFF" data-light-mode="true" style="background-color: #FFFFFF; color: black;">White</div>
+                <div class="color-option" id="rainbow-option" style="background: linear-gradient(90deg, #b54848, #b57548, #b5b148, #6eb548, #485eb5, #ff00ff, #45326e); color: white;">Rainbow</div>
+            </div>
+            <div class="image-url-section">
+                <input type="text" id="first-time-image-url-input" placeholder="Enter wallpaper URL..." />
+                <button id="first-time-set-image-button">Set Wallpaper</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search Functionality
+        function searchGoogle() {
+            const query = document.getElementById('search-input').value.trim();
+            if (query) {
+                window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        // Allow pressing "Enter" to search
+        document.getElementById('search-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchGoogle();
+            }
+        });
+
+        // Background Changer Functionality
+        const changeBackgroundText = document.getElementById('change-background');
+        const popupMenu = document.getElementById('popup-menu');
+        const colourButton = document.getElementById('colour-button');
+        const colourOptions = document.getElementById('colour-options');
+        const imageButton = document.getElementById('image-button');
+        const imageUrlPopup = document.getElementById('image-url-popup');
+        const setImageButton = document.getElementById('set-image-button');
+        const closeImagePopup = document.getElementById('close-image-popup');
+        const imageUrlInput = document.getElementById('image-url-input');
+        const body = document.body;
+        const firstTimePopup = document.getElementById('first-time-popup');
+        const firstTimeImageUrlInput = document.getElementById('first-time-image-url-input');
+        const firstTimeSetImageButton = document.getElementById('first-time-set-image-button');
+
+        // Load saved background color/image and light mode state from localStorage
+        const savedColor = localStorage.getItem('backgroundColor');
+        const savedImage = localStorage.getItem('backgroundImage');
+        const isLightMode = localStorage.getItem('lightMode') === 'true';
+        if (savedColor) {
+            body.style.backgroundColor = savedColor;
+        }
+        if (savedImage) {
+            body.style.backgroundImage = `url('${savedImage}')`;
+            body.style.backgroundSize = 'cover';
+            body.style.backgroundPosition = 'center';
+        }
+        if (isLightMode) {
+            enableLightMode();
+        }
+
+        // Function to enable light mode
+        function enableLightMode() {
+            document.body.classList.add('light-mode');
+        }
+
+        // Function to disable light mode
+        function disableLightMode() {
+            document.body.classList.remove('light-mode');
+        }
+
+        // Rainbow colors (excluding white)
+        const rainbowColors = [
+            '#b54848', // Red
+            '#b57548', // Orange
+            '#b5b148', // Yellow
+            '#6eb548', // Green
+            '#485eb5', // Blue
+            '#ff00ff', // Pink
+            '#45326e'  // Purple
+        ];
+
+        let rainbowInterval = null; // To store the interval ID
+
+        // Function to start the rainbow effect
+        function startRainbowEffect() {
+            let currentIndex = 0;
+
+            rainbowInterval = setInterval(() => {
+                body.style.backgroundColor = rainbowColors[currentIndex];
+                currentIndex = (currentIndex + 1) % rainbowColors.length; // Cycle through colors
+            }, 1000); // Change color every 1 second
+        }
+
+        // Function to stop the rainbow effect
+        function stopRainbowEffect() {
+            if (rainbowInterval) {
+                clearInterval(rainbowInterval);
+                rainbowInterval = null;
+            }
+            localStorage.setItem('rainbowActive', 'false'); // Clear the rainbow effect state
+        }
+
+        // Check if the rainbow effect is active on page load
+        const isRainbowActive = localStorage.getItem('rainbowActive') === 'true';
+        if (isRainbowActive) {
+            startRainbowEffect();
+        }
+
+        // Toggle popup menu when "Themes" is clicked
+        changeBackgroundText.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent the click from closing the menu immediately
+            popupMenu.style.display = popupMenu.style.display === 'block' ? 'none' : 'block';
+            colourOptions.style.display = 'none'; // Hide colour options by default
+        });
+
+        // Show colour options when "Colour" button is clicked
+        colourButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent the click from closing the menu immediately
+            colourOptions.style.display = colourOptions.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Show image URL popup when "Image" button is clicked
+        imageButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent the click from closing the menu immediately
+            imageUrlPopup.style.display = 'flex';
+            popupMenu.style.display = 'none'; // Close the main popup menu
+        });
+
+        // Close image URL popup when "Close" button is clicked
+        closeImagePopup.addEventListener('click', () => {
+            imageUrlPopup.style.display = 'none';
+        });
+
+        // Set background image when "Set Image" button is clicked
+        setImageButton.addEventListener('click', () => {
+            const imageUrl = imageUrlInput.value.trim();
+            if (imageUrl) {
+                // Set background color to transparent before applying the image
+                body.style.backgroundColor = 'transparent';
+                body.style.backgroundImage = `url('${imageUrl}')`;
+                body.style.backgroundSize = 'cover';
+                body.style.backgroundPosition = 'center';
+                localStorage.setItem('backgroundImage', imageUrl); // Save the image URL to localStorage
+                localStorage.removeItem('backgroundColor'); // Remove saved color if an image is set
+                stopRainbowEffect(); // Stop the rainbow effect
+                imageUrlPopup.style.display = 'none';
+            }
+        });
+
+        // Set background image from the first-time popup
+        firstTimeSetImageButton.addEventListener('click', () => {
+            const imageUrl = firstTimeImageUrlInput.value.trim();
+            if (imageUrl) {
+                // Set background color to transparent before applying the image
+                body.style.backgroundColor = 'transparent';
+                body.style.backgroundImage = `url('${imageUrl}')`;
+                body.style.backgroundSize = 'cover';
+                body.style.backgroundPosition = 'center';
+                localStorage.setItem('backgroundImage', imageUrl); // Save the image URL to localStorage
+                localStorage.removeItem('backgroundColor'); // Remove saved color if an image is set
+                stopRainbowEffect(); // Stop the rainbow effect
+                firstTimePopup.style.display = 'none'; // Close the first-time popup
+                localStorage.setItem('firstTimePopupShown', 'true'); // Mark the popup as shown
+            }
+        });
+
+        // Change background color when a colour option is clicked
+        document.querySelectorAll('.colour-options button, .color-option').forEach((option) => {
+            option.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent the click from closing the menu immediately
+                const color = option.getAttribute('data-color');
+                const isLightMode = option.getAttribute('data-light-mode') === 'true';
+                
+                // Remove background image before applying the color
+                body.style.backgroundImage = 'none';
+                body.style.backgroundColor = color;
+                localStorage.setItem('backgroundColor', color); // Save the color to localStorage
+                localStorage.removeItem('backgroundImage'); // Remove saved image if a color is set
+                stopRainbowEffect(); // Stop the rainbow effect
+
+                if (isLightMode) {
+                    enableLightMode();
+                    localStorage.setItem('lightMode', 'true'); // Save light mode state
+                } else {
+                    disableLightMode();
+                    localStorage.setItem('lightMode', 'false'); // Save light mode state
+                }
+
+                // Close the first-time popup if it's open
+                if (firstTimePopup) {
+                    firstTimePopup.style.display = 'none';
+                    localStorage.setItem('firstTimePopupShown', 'true'); // Mark the popup as shown
+                }
+
+                // Close the popup menu if it's open
+                popupMenu.style.display = 'none';
+                colourOptions.style.display = 'none';
+            });
+        });
+
+        // Add event listener for the Rainbow button
+        document.getElementById('rainbow-button').addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent the click from closing the menu immediately
+
+            // Stop any existing rainbow effect
+            stopRainbowEffect();
+
+            // Start the rainbow effect
+            startRainbowEffect();
+
+            // Store the rainbow effect state in localStorage
+            localStorage.setItem('rainbowActive', 'true');
+
+            // Remove any saved background color/image from localStorage
+            localStorage.removeItem('backgroundColor');
+            localStorage.removeItem('backgroundImage');
+
+            // Close the popup menu
+            popupMenu.style.display = 'none';
+            colourOptions.style.display = 'none';
+        });
+
+        // Add event listener for the Rainbow option in the first-time popup
+        document.getElementById('rainbow-option').addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent the click from closing the menu immediately
+
+            // Stop any existing rainbow effect
+            stopRainbowEffect();
+
+            // Start the rainbow effect
+            startRainbowEffect();
+
+            // Store the rainbow effect state in localStorage
+            localStorage.setItem('rainbowActive', 'true');
+
+            // Remove any saved background color/image from localStorage
+            localStorage.removeItem('backgroundColor');
+            localStorage.removeItem('backgroundImage');
+
+            // Close the first-time popup
+            firstTimePopup.style.display = 'none';
+            localStorage.setItem('firstTimePopupShown', 'true'); // Mark the popup as shown
+        });
+
+        // Stop the rainbow effect when a solid color is selected
+        document.querySelectorAll('.colour-options button:not(#rainbow-button)').forEach((option) => {
+            option.addEventListener('click', (event) => {
+                stopRainbowEffect(); // Stop the rainbow effect
+            });
+        });
+
+        // Close menus when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.popup-menu') && !event.target.closest('.change-background')) {
+                popupMenu.style.display = 'none';
+                colourOptions.style.display = 'none';
+            }
+            if (!event.target.closest('.image-url-popup')) {
+                imageUrlPopup.style.display = 'none';
+            }
+        });
+
+        // Prevent clicks inside the menus from closing them
+        popupMenu.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+
+        colourOptions.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+
+        imageUrlPopup.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+
+        // Show first-time popup if it's the first visit
+        const firstTimePopupShown = localStorage.getItem('firstTimePopupShown');
+        if (!firstTimePopupShown) {
+            firstTimePopup.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
