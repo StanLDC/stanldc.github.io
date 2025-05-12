@@ -25,7 +25,7 @@
             color: #a45fa8;
             font-size: 1.5rem;
             margin-top: 0.5rem;
-            height: 1.8rem; /* Fixed height to prevent layout shift */
+            height: 1.8rem; 
         }
     </style>
 </head>
@@ -41,7 +41,6 @@
         let isTyping = false;
         let typedText = "";
 
-        // Type the initial message
         typeMessage(currentMessage);
 
         function typeMessage(text) {
@@ -54,7 +53,7 @@
                     typedText += text.charAt(charIndex);
                     messageElement.textContent = typedText;
                     charIndex++;
-                    setTimeout(type, 100); // Typing speed
+                    setTimeout(type, 100);
                 } else {
                     isTyping = false;
                     startDotAnimation();
@@ -71,30 +70,26 @@
 
         function updateDots() {
             if (!isTyping) {
-                dotCount = (dotCount + 1) % 4; // 0-3
+                dotCount = (dotCount + 1) % 4; 
                 const dots = ".".repeat(dotCount);
                 messageElement.textContent = currentMessage + dots;
             }
         }
 
-        // Main timer
         const interval = setInterval(() => {
             timer++;
             
-            // After 10 seconds, change message
             if (timer === 10) {
                 currentMessage = "You've been here long enough";
                 typeMessage(currentMessage);
             }
             
-            // After 20 seconds, redirect
             if (timer === 20) {
                 clearInterval(interval);
-                window.location.href = "/index.html";
+                window.location.href = "/";
             }
         }, 1000);
 
-        // Animate dots every 500ms
         setInterval(updateDots, 500);
     </script>
 </body>
