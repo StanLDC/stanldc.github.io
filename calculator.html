@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floptropica Calculator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://kappa.lol/pmfonc');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        h1 {
+            color: hotpink;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
+            font-size: 2.5em;
+        }
+
+        .calculator {
+            width: 300px;
+            background-color: pink;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin: 30px 0;
+            border: 3px solid hotpink;
+        }
+
+        .display {
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 24px;
+            text-align: right;
+            border: 2px solid hotpink;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        button {
+            height: 50px;
+            border-radius: 10px;
+            border: none;
+            background-color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+
+        button:hover {
+            background-color: hotpink;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .operator {
+            background-color: lightpink;
+        }
+
+        .equals {
+            background-color: hotpink;
+            color: white;
+        }
+
+        .clear {
+            background-color: plum;
+            color: white;
+        }
+        footer {
+            color: rgb(255, 255, 255);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Floptropica Calculator</h1>
+    
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="appendToDisplay('(')">(</button>
+            <button onclick="appendToDisplay(')')">)</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+            
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="backspace()">⌫</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let currentDisplay = '0';
+        const display = document.getElementById('display');
+        
+        function updateDisplay() {
+            display.textContent = currentDisplay;
+        }
+        
+        function appendToDisplay(value) {
+            if (currentDisplay === '0' && value !== '.') {
+                currentDisplay = value;
+            } else {
+                currentDisplay += value;
+            }
+            updateDisplay();
+        }
+        
+        function clearDisplay() {
+            currentDisplay = '0';
+            updateDisplay();
+        }
+        
+        function backspace() {
+            if (currentDisplay.length === 1) {
+                currentDisplay = '0';
+            } else {
+                currentDisplay = currentDisplay.slice(0, -1);
+            }
+            updateDisplay();
+        }
+        
+        function calculate() {
+            try {
+                currentDisplay = eval(currentDisplay).toString();
+            } catch (error) {
+                currentDisplay = 'Error';
+            }
+            updateDisplay();
+        }
+    </script>
+    <footer>for floptropicans by floptropicans 🩷</footer>
+</body>
+</html>
