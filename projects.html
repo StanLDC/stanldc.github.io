@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StanLDC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Share Tech', sans-serif;
+      background-color: #3B1887;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-size: 20px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px;
+    }
+
+    .main h1 {
+      font-size: 4em;
+      margin-bottom: 30px;
+    }
+
+    .main .links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .main .links a {
+      text-decoration: none;
+      background: #ffffff22;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 1.3em;
+      transition: background 0.2s;
+    }
+
+    .main .links a:hover {
+      background: #ffffff44;
+    }
+
+    footer {
+      background-color: #2A1265;
+      padding: 18px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-size: 1em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 8px;
+      font-size: 1.05em;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #ddd;
+    }
+
+    .footer-credit {
+      font-size: 0.85em;
+      color: #ccc;
+    }
+
+    #home-btn, #translate-btn {
+      position: fixed;
+      left: 25px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #6800ca8c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      z-index: 9999;
+    }
+
+    #home-btn {
+      bottom: 170px;
+    }
+
+    #translate-btn {
+      bottom: 100px;
+    }
+
+    #translate-popup {
+      position: fixed;
+      bottom: 180px;
+      left: 25px;
+      background: #4e1aa3;
+      border-radius: 12px;
+      padding: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 10000;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+      min-width: 220px;
+    }
+
+    #translate-popup h2 {
+      margin: 0 0 10px 0;
+      font-size: 1.3em;
+      text-align: left;
+    }
+
+    .language-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      background: #ffffff10;
+      transition: background 0.2s;
+    }
+
+    .language-option:hover {
+      background: #ffffff30;
+    }
+
+    .language-option img {
+      width: 24px;
+      height: 24px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <h1>Projects</h1>
+    <div class="links">
+      <a href="https://stanldc.com" target="_blank">Coming</a>
+      <a href="https://stanldc.com" target="_blank">Soon</a>
+      <a href="https://stanldc.com" target="_blank">...</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/credits">Credits</a>
+      <a href="/projects">Projects</a>
+      <a href="/explode">Explode</a>
+    </div>
+    <div class="footer-credit">
+      Made with 💜 – 2025 Stanldc
+    </div>
+  </footer>
+
+  <button id="home-btn">🏠</button>
+
+  <button id="translate-btn">🌐</button>
+
+  <div id="translate-popup">
+    <h2>Languages</h2>
+    <div class="language-option" onclick="setLanguage('en')">
+      <img src="https://flagcdn.com/gb.svg"> English
+    </div>
+    <div class="language-option" onclick="setLanguage('fr')">
+      <img src="https://flagcdn.com/fr.svg"> Français
+    </div>
+    <div class="language-option" onclick="setLanguage('es')">
+      <img src="https://flagcdn.com/es.svg"> Español
+    </div>
+    <div class="language-option" onclick="setLanguage('de')">
+      <img src="https://flagcdn.com/de.svg"> Deutsch
+    </div>
+    <div class="language-option" onclick="setLanguage('nl')">
+      <img src="https://flagcdn.com/nl.svg"> Nederlands
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    document.getElementById("home-btn").addEventListener("click", function () {
+      window.location.href = "https://stanldc.com";
+    });
+
+    document.getElementById("translate-btn").addEventListener("click", function () {
+      const popup = document.getElementById("translate-popup");
+      popup.style.display = (popup.style.display === "flex") ? "none" : "flex";
+    });
+
+    function setLanguage(lang) {
+      const select = document.querySelector(".goog-te-combo");
+      if (select) {
+        select.value = lang;
+        select.dispatchEvent(new Event("change"));
+      }
+      document.getElementById("translate-popup").style.display = "none";
+    }
+  </script>
+
+  <div id="google_translate_element" style="display:none;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,fr,es,de,nl'
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
