@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Forever Sherry Jones — Lesbian Flag + EXPLOSIONS</title>
+  <title>Explode</title>
   <style>
     body {
       margin: 0;
@@ -14,42 +14,26 @@
       line-height: 1.4;
       cursor: pointer;
     }
-
     #container {
       padding: 20px;
       text-align: center;
     }
-
     .line {
       margin: 6px 0;
       white-space: nowrap;
     }
-
-    #explodeAudio {
-      position: absolute;
-      left: -9999px;
-    }
   </style>
 </head>
 <body>
-  <audio id="explodeAudio" src="explode.mp3" loop></audio>
-
   <div id="container"></div>
 
   <script>
-    const colors = [
-      '#d52d00', // dark orange
-      '#ef7627', // light orange
-      '#ffffff', // white
-      '#d162a4', // pink
-      '#b55690', // dark pink
-      '#a30262'  // deep pink
-    ];
-
+    const colors = ['#d52d00', '#ef7627', '#ffffff', '#d162a4', '#b55690', '#a30262'];
     const container = document.getElementById('container');
-    const audio = document.getElementById('explodeAudio');
+    const audio = new Audio('explode.mp3');
+    audio.loop = true;
+    audio.volume = 0.6;
     let audioStarted = false;
-
     function addLine() {
       const line = document.createElement('div');
       line.className = 'line';
@@ -61,27 +45,18 @@
       }
       container.appendChild(line);
     }
-
-    for (let i = 0; i < 60; i++) {
-      addLine();
-    }
+    for (let i = 0; i < 60; i++) addLine();
 
     window.addEventListener('scroll', () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
-        for (let i = 0; i < 30; i++) {
-          addLine();
-        }
+        for (let i = 0; i < 30; i++) addLine();
       }
     });
 
     function startAudio() {
       if (!audioStarted) {
-        audio.volume = 1.0;
-        audio.play().then(() => {
-          audioStarted = true;
-        }).catch(e => {
-          console.warn("Audio play was blocked:", e);
-        });
+        audio.play().catch(e => console.warn("Audio blocked:", e));
+        audioStarted = true;
       }
     }
 
